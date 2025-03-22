@@ -1,0 +1,22 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+  # cookie 30 天过期
+  session:
+    cookie:
+      max-age: 2592000
+
+
+# 接口文档配置
+knife4j:
+  enable: true
+  openapi:
+    title: "安全教育接口文档"
+    version: 1.0
+    group:
+      default:
+        api-rule: package
+        api-rule-resources:
+          - com.lihui.security_office_backend
+
