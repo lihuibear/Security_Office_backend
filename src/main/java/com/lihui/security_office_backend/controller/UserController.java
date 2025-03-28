@@ -2,12 +2,15 @@ package com.lihui.security_office_backend.controller;
 
 import com.lihui.security_office_backend.common.BaseResponse;
 import com.lihui.security_office_backend.common.ResultUtils;
+import com.lihui.security_office_backend.exception.BusinessException;
 import com.lihui.security_office_backend.exception.ErrorCode;
 import com.lihui.security_office_backend.exception.ThrowUtils;
+import com.lihui.security_office_backend.model.dto.user.UserEditRequest;
 import com.lihui.security_office_backend.model.dto.user.UserLoginRequest;
 import com.lihui.security_office_backend.model.entity.User;
 import com.lihui.security_office_backend.model.vo.LoginUserVO;
 import com.lihui.security_office_backend.service.UserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -55,9 +58,35 @@ public class UserController {
      */
     @PostMapping("/logout")
     public BaseResponse<Boolean> userLogout(HttpServletRequest request) {
-        ThrowUtils.throwIf(request == null, ErrorCode.PARAMS_ERROR);
+        ThrowUtils.throwIf(request == null, ErrorCode.PARAMS_ERROR, "请求为空");
         boolean result = userService.userLogout(request);
         return ResultUtils.success(result);
+    }
+
+    //编辑用户信息
+    @PostMapping("/edit")
+    public BaseResponse<Boolean> editUser(@RequestBody UserEditRequest userEditRequest, HttpServletRequest request){
+        // 获取当前登录用户的详细信息
+        User loginUser = userService.getLoginUser(request);  // 传递 request 参数
+        // 校验参数
+        if (userEditRequest == null || userEditRequest.getId() == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户ID不能为空");
+        }
+        // 如果编辑的是其他用户的资料，需要判断权限
+        if (!userEditRequest.getId().equals(loginUser.getId())) {
+            throw new BusinessException(ErrorCode.NO_AUTH_ERROR, "没有权限编辑其他用户信息");
+        }
+        // 创建用户对象并复制编辑请求中的数据
+        User userToUpdate = new User();
+        BeanUtils.copyProperties(userEditRequest, userToUpdate);
+        // 更新用户信息
+        boolean result = userService.updateById(userToUpdate);
+        if (!result) {
+            throw new BusinessException(ErrorCode.OPERATION_ERROR, "更新失败");
+        }
+        // 返回更新成功的结果
+        return ResultUtils.success(true);
+
     }
 
 }

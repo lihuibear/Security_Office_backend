@@ -1,5 +1,6 @@
 package com.lihui.security_office_backend.service;
 
+import com.lihui.security_office_backend.model.dto.user.UserEditRequest;
 import com.lihui.security_office_backend.model.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lihui.security_office_backend.model.vo.LoginUserVO;
@@ -28,4 +29,6 @@ public interface UserService extends IService<User> {
     User getLoginUser(HttpServletRequest request);
 
     boolean userLogout(HttpServletRequest request);
+
+
 }

@@ -1,26 +1,23 @@
-package com.lihui.security_office_backend.model.entity;
+package com.lihui.security_office_backend.model.vo;
 
 import com.baomidou.mybatisplus.annotation.*;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * 学习内容
+ *
  * @TableName content
  */
-@TableName(value ="content")
+
 @Data
-public class Content implements Serializable {
+public class ContentVO implements Serializable {
     /**
      * 内容ID
      */
-    @TableId(type = IdType.AUTO)
     private Long id;
-
-
-    private Integer learningTime;
 
     /**
      * 内容标题
@@ -67,17 +64,11 @@ public class Content implements Serializable {
      */
     private Date updateTime;
 
-    /**
-     * 是否删除
-     */
-    @TableLogic
-    private Integer isDelete;
 
     /**
      * 上传内容的用户ID
      */
     private Long userId;
 
-    @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

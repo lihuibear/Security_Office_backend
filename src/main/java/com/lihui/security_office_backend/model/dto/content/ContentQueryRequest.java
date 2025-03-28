@@ -1,26 +1,23 @@
-package com.lihui.security_office_backend.model.entity;
+package com.lihui.security_office_backend.model.dto.content;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.lihui.security_office_backend.common.PageRequest;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * 学习内容
+ *
  * @TableName content
  */
-@TableName(value ="content")
 @Data
-public class Content implements Serializable {
+public class ContentQueryRequest extends PageRequest implements Serializable {
     /**
      * 内容ID
      */
-    @TableId(type = IdType.AUTO)
     private Long id;
 
-
-    private Integer learningTime;
 
     /**
      * 内容标题
@@ -67,17 +64,12 @@ public class Content implements Serializable {
      */
     private Date updateTime;
 
-    /**
-     * 是否删除
-     */
-    @TableLogic
-    private Integer isDelete;
 
-    /**
-     * 上传内容的用户ID
-     */
-    private Long userId;
+//    /**
+//     * 上传内容的用户ID
+//     */
+//    private Long userId;
 
-    @TableField(exist = false)
+
     private static final long serialVersionUID = 1L;
 }

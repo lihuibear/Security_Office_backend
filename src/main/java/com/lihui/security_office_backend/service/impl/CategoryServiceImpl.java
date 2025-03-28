@@ -1,7 +1,5 @@
 package com.lihui.security_office_backend.service.impl;
 
-import java.util.Date;
-
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -11,7 +9,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lihui.security_office_backend.exception.BusinessException;
 import com.lihui.security_office_backend.exception.ErrorCode;
 import com.lihui.security_office_backend.model.dto.category.CategoryDeleteRequest;
-import com.lihui.security_office_backend.model.dto.category.CategoryQuerryRequest;
+import com.lihui.security_office_backend.model.dto.category.CategoryQueryRequest;
 import com.lihui.security_office_backend.model.dto.category.CategoryUpdateRequest;
 import com.lihui.security_office_backend.model.entity.Category;
 import com.lihui.security_office_backend.model.vo.CategoryVO;
@@ -92,19 +90,19 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category>
     }
 
     @Override
-    public QueryWrapper<Category> getQueryWrapper(CategoryQuerryRequest categoryQuerryRequest) {
+    public QueryWrapper<Category> getQueryWrapper(CategoryQueryRequest categoryQueryRequest) {
 
         QueryWrapper<Category> queryWrapper = new QueryWrapper<>();
-        if (categoryQuerryRequest == null) {
+        if (categoryQueryRequest == null) {
             return queryWrapper;
         }
         // 从对象中取值
-        Long id = categoryQuerryRequest.getId();
-        String categoryName = categoryQuerryRequest.getCategoryName();
-        String description = categoryQuerryRequest.getDescription();
+        Long id = categoryQueryRequest.getId();
+        String categoryName = categoryQueryRequest.getCategoryName();
+        String description = categoryQueryRequest.getDescription();
 
-        String sortField = categoryQuerryRequest.getSortField();
-        String sortOrder = categoryQuerryRequest.getSortOrder();
+        String sortField = categoryQueryRequest.getSortField();
+        String sortOrder = categoryQueryRequest.getSortOrder();
         // 拼接查询条件
         queryWrapper.eq(ObjUtil.isNotEmpty(id), "id", id);
         queryWrapper.eq(ObjUtil.isNotEmpty(categoryName), "categoryName", categoryName);

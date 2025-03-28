@@ -11,6 +11,7 @@ import java.io.IOException;
 /**
  * 文件上传控制器
  */
+@Deprecated
 @RestController
 @RequestMapping("/file")
 public class FileUploadController {

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lihui.security_office_backend.exception.BusinessException;
 import com.lihui.security_office_backend.exception.ErrorCode;
+import com.lihui.security_office_backend.model.dto.user.UserEditRequest;
 import com.lihui.security_office_backend.model.entity.User;
 import com.lihui.security_office_backend.model.vo.LoginUserVO;
 import com.lihui.security_office_backend.service.UserService;
@@ -116,6 +117,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         request.getSession().removeAttribute(USER_LOGIN_STATE);
         return true;
     }
+
 
 }
 

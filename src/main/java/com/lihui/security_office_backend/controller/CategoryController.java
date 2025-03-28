@@ -7,7 +7,7 @@ import com.lihui.security_office_backend.exception.ErrorCode;
 import com.lihui.security_office_backend.exception.ThrowUtils;
 import com.lihui.security_office_backend.model.dto.category.CategoryAddRequest;
 import com.lihui.security_office_backend.model.dto.category.CategoryDeleteRequest;
-import com.lihui.security_office_backend.model.dto.category.CategoryQuerryRequest;
+import com.lihui.security_office_backend.model.dto.category.CategoryQueryRequest;
 import com.lihui.security_office_backend.model.dto.category.CategoryUpdateRequest;
 import com.lihui.security_office_backend.model.entity.Category;
 import com.lihui.security_office_backend.model.vo.CategoryVO;
@@ -81,13 +81,13 @@ public class CategoryController {
      * 分页获取分类列表
      */
     @PostMapping("/list/page")
-    public BaseResponse<Page<Category>> getCategoryListBypage(
-            @RequestBody CategoryQuerryRequest categoryQuerryRequest) {
-        long current = categoryQuerryRequest.getCurrent();
-        long size = categoryQuerryRequest.getPageSize();
+    public BaseResponse<Page<Category>> getCategoryListByPage(
+            @RequestBody CategoryQueryRequest categoryQueryRequest) {
+        long current = categoryQueryRequest.getCurrent();
+        long size = categoryQueryRequest.getPageSize();
         // 查数据库
         Page<Category> categoryPage = categoryService.page(new Page<>(current, size),
-                categoryService.getQueryWrapper(categoryQuerryRequest));
+                categoryService.getQueryWrapper(categoryQueryRequest));
         return ResultUtils.success(categoryPage);
 
     }

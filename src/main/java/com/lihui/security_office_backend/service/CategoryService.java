@@ -3,7 +3,7 @@ package com.lihui.security_office_backend.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lihui.security_office_backend.model.dto.category.CategoryDeleteRequest;
-import com.lihui.security_office_backend.model.dto.category.CategoryQuerryRequest;
+import com.lihui.security_office_backend.model.dto.category.CategoryQueryRequest;
 import com.lihui.security_office_backend.model.dto.category.CategoryUpdateRequest;
 import com.lihui.security_office_backend.model.entity.Category;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -36,10 +36,10 @@ public interface CategoryService extends IService<Category> {
     /**
      * 根据条件获取查询条件
      *
-     * @param categoryQuerryRequest
+     * @param categoryQueryRequest
      * @return
      */
-    QueryWrapper<Category> getQueryWrapper(CategoryQuerryRequest categoryQuerryRequest);
+    QueryWrapper<Category> getQueryWrapper(CategoryQueryRequest categoryQueryRequest);
 
     /**
      * 删除分类

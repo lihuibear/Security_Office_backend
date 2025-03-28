@@ -1,9 +1,5 @@
 package com.lihui.security_office_backend.model.dto.category;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.lihui.security_office_backend.common.PageRequest;
 import lombok.Data;
 
@@ -15,7 +11,7 @@ import java.util.Date;
  * @TableName category
  */
 @Data
-public class CategoryQuerryRequest extends PageRequest implements Serializable {
+public class CategoryQueryRequest extends PageRequest implements Serializable {
 
 
     /**

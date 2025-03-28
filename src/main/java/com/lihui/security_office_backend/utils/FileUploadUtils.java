@@ -1,20 +1,20 @@
 package com.lihui.security_office_backend.utils;
 
 import com.lihui.security_office_backend.config.FileTypeConfig;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+@Slf4j
 @Component
 public class FileUploadUtils {
 
@@ -80,6 +80,58 @@ public class FileUploadUtils {
             if (!dir.mkdirs()) {
                 throw new RuntimeException("无法创建目录: " + directory);
             }
+        }
+    }
+
+    /**
+     * 删除文件的方法
+     *
+     * @param filePath 要删除的文件路径（相对于项目根目录）
+     * @return 如果删除成功返回 true，否则返回 false
+     */
+    public static boolean deleteFile(String filePath) {
+        if (filePath == null || filePath.trim().isEmpty()) {
+            log.warn("尝试删除文件时传入了空的文件路径");
+            return false;
+        }
+
+        // 构建文件的绝对路径
+        Path path;
+        try {
+            // 假设 filePath 是相对于项目根目录的相对路径
+            String fullPath = filePath.replaceFirst("^/", "");
+            path = Paths.get(fullPath).normalize();
+        } catch (Exception e) {
+            log.error("构建文件路径时出错: {}", filePath, e);
+            return false;
+        }
+
+        if (!Files.exists(path)) {
+            log.warn("文件不存在: {}", path);
+            return false;
+        }
+
+        if (!Files.isRegularFile(path)) {
+            log.warn("路径不是文件: {}", path);
+            return false;
+        }
+
+        try {
+            Files.delete(path);
+            log.info("成功删除文件: {}", path);
+            return true;
+        } catch (NoSuchFileException e) {
+            log.error("文件不存在: {}", path, e);
+            return false;
+        } catch (DirectoryNotEmptyException e) {
+            log.error("目录不为空，无法删除文件: {}", path, e);
+            return false;
+        } catch (IOException e) {
+            log.error("删除文件时发生I/O错误: {}", path, e);
+            return false;
+        } catch (SecurityException e) {
+            log.error("没有权限删除文件: {}", path, e);
+            return false;
         }
     }
 }    
