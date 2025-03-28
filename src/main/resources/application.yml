@@ -20,3 +20,35 @@ knife4j:
         api-rule-resources:
           - com.lihui.security_office_backend
 
+
+spring:
+  application:
+    name: security_office_backend
+  # 数据库Mysql
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/security_office?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+    username: root
+    password: 123456
+
+mybatis-plus:
+  configuration:
+    # MyBatis 配置
+    map-underscore-to-camel-case: false
+    # 仅在开发环境打印日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    safe-result-handler-enabled:
+  global-config:
+    enable-sql-runner: true
+    db-config:
+      logic-delete-field: isDelete # 全局逻辑删除的实体字段名
+      logic-delete-value: 1 # 逻辑已删除值（默认为 1）
+      logic-not-delete-value: 0 # 逻辑未删除值（默认为 0）
+
+
+file:
+  upload:
+    base-dir: G:/uploads # 本地存储根目录
+    video-dir: G:/uploads/videos
+    article-dir: G:/uploads/articles
+    cover-dir: G:/uploads/covers
