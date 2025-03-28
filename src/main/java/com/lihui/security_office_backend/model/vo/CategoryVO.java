@@ -1,10 +1,13 @@
-package com.lihui.security_office_backend.model.entity;
+package com.lihui.security_office_backend.model.vo;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * 内容分类
@@ -12,11 +15,10 @@ import lombok.Data;
  */
 @TableName(value ="category")
 @Data
-public class Category implements Serializable {
+public class CategoryVO implements Serializable {
     /**
      * 分类ID
      */
-    @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
@@ -44,12 +46,6 @@ public class Category implements Serializable {
      */
     private Date updateTime;
 
-    /**
-     * 是否删除
-     */
-    @TableLogic
-    private Integer isDelete;
 
-    @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

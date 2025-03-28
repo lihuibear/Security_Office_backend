@@ -30,6 +30,10 @@ spring:
     url: jdbc:mysql://localhost:3306/security_office?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
     username: root
     password: 123456
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
 
 mybatis-plus:
   configuration:
@@ -49,6 +53,6 @@ mybatis-plus:
 file:
   upload:
     base-dir: G:/uploads # 本地存储根目录
-    video-dir: G:/uploads/videos
-    article-dir: G:/uploads/articles
-    cover-dir: G:/uploads/covers
+    video-dir: videos    # 视频文件子目录（相对于 base-dir）
+    article-dir: articles # 文章文件子目录（相对于 base-dir）
+    cover-dir: covers     # 封面文件子目录（相对于 base-dir）

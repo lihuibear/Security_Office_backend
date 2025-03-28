@@ -4,7 +4,7 @@ import com.lihui.security_office_backend.common.BaseResponse;
 import com.lihui.security_office_backend.common.ResultUtils;
 import com.lihui.security_office_backend.exception.ErrorCode;
 import com.lihui.security_office_backend.exception.ThrowUtils;
-import com.lihui.security_office_backend.model.dto.UserLoginRequest;
+import com.lihui.security_office_backend.model.dto.user.UserLoginRequest;
 import com.lihui.security_office_backend.model.entity.User;
 import com.lihui.security_office_backend.model.vo.LoginUserVO;
 import com.lihui.security_office_backend.service.UserService;
