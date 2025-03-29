@@ -101,58 +101,35 @@ public class UserController {
 
     }
 
-//    /**
-//     * 导出用户列表为Excel文件
-//     *
-//     * @param response 响应对象
-//     */
-//    @GetMapping("/export")
-//    public void exportUsers(HttpServletResponse response) {
-//        List<User> userList = userService.getAllUsers();
-//        String fileName = "用户列表";
-//        // 不排除任何字段，传入null
-//        Set<String> excludeColumnFieldNames = null;
-//        ExportUtils.downloadExportExcel(response, userList, fileName, User.class, excludeColumnFieldNames);
-//    }
-//
-//    /**
-//     * 导入用户数据
-//     */
-//    @PostMapping("/import")
-//    public String importUsers(@RequestParam("file") MultipartFile file) {
-//        try {
-//            ExcelUtils.importExcel(file, User.class, new UserExcelListener(userService));
-//            return "用户导入成功";
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return "用户导入失败：" + e.getMessage();
-//        }
-//    }
-
     /**
      * 导出用户列表
+     *
+     * @return
      */
-    @AuthCheck(mustRole= UserConstant.ADMIN_ROLE)
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     @GetMapping("/export")
-    public void exportUsers(HttpServletResponse response) {
+    public BaseResponse<String> exportUsers(HttpServletResponse response) {
         List<User> userList = userService.getAllUsers();
         String fileName = "用户列表";
         Set<String> excludeColumnFieldNames = null;
         ExcelUtils.exportExcel(response, userList, fileName, User.class, excludeColumnFieldNames);
+
+        return ResultUtils.success("用户列表导出成功");
     }
 
     /**
      * 导入用户数据
      */
-    @AuthCheck(mustRole= UserConstant.ADMIN_ROLE)
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     @PostMapping("/import")
-    public String importUsers(@RequestParam("file") MultipartFile file) {
+    public BaseResponse<String> importUsers(@RequestParam("file") MultipartFile file) {
         try {
             ExcelUtils.importExcel(file, User.class, new UserExcelListener(userService));
-            return "用户导入成功";
+            return ResultUtils.success("用户导入成功");
+
         } catch (Exception e) {
             e.printStackTrace();
-            return "用户导入失败：" + e.getMessage();
+            throw new BusinessException(ErrorCode.OPERATION_ERROR, "用户导入失败：" + e.getMessage());
         }
     }
 
