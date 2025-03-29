@@ -10,7 +10,7 @@
             <result property="contentId" column="contentId" jdbcType="BIGINT"/>
             <result property="score" column="score" jdbcType="INTEGER"/>
             <result property="learningTime" column="learningTime" jdbcType="INTEGER"/>
-            <result property="completionStatus" column="completionStatus" jdbcType="OTHER"/>
+            <result property="completionStatus" column="completionStatus" jdbcType="INTEGER"/>
             <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 

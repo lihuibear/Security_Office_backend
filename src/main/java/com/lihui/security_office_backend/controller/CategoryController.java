@@ -1,8 +1,11 @@
 package com.lihui.security_office_backend.controller;
 
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.lihui.security_office_backend.annotation.AuthCheck;
 import com.lihui.security_office_backend.common.BaseResponse;
 import com.lihui.security_office_backend.common.ResultUtils;
+import com.lihui.security_office_backend.constant.UserConstant;
 import com.lihui.security_office_backend.exception.ErrorCode;
 import com.lihui.security_office_backend.exception.ThrowUtils;
 import com.lihui.security_office_backend.model.dto.category.CategoryAddRequest;
@@ -12,7 +15,7 @@ import com.lihui.security_office_backend.model.dto.category.CategoryUpdateReques
 import com.lihui.security_office_backend.model.entity.Category;
 import com.lihui.security_office_backend.model.vo.CategoryVO;
 import com.lihui.security_office_backend.service.CategoryService;
-import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +32,8 @@ public class CategoryController {
     /**
      * 创建分类（如果分类已存在，则返回已有分类ID）
      */
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+
     @PostMapping("/add")
     public BaseResponse<Long> addCategory(@RequestBody CategoryAddRequest categoryAddRequest) {
         // 校验分类名称是否为空
@@ -95,6 +100,8 @@ public class CategoryController {
     /**
      * 删除分类
      */
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+
     @PostMapping("/delete")
     public BaseResponse<Boolean> deleteCategory(@RequestBody CategoryDeleteRequest categoryDeleteRequest) {
         boolean b = categoryService.deleteCategory(categoryDeleteRequest);
@@ -104,6 +111,8 @@ public class CategoryController {
     /**
      * 更新分类信息
      */
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+
     @PostMapping("/update")
     public BaseResponse<Boolean> updateCategory(@RequestBody CategoryUpdateRequest categoryUpdateRequest) {
         boolean b = categoryService.updateCategory(categoryUpdateRequest);

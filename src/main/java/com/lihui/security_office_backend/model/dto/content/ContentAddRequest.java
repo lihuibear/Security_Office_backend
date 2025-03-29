@@ -23,6 +23,11 @@ public class ContentAddRequest implements Serializable {
     private String title;
 
     /**
+     * 学习时长（分钟）
+     */
+    private Integer learningTime;
+
+    /**
      * 内容描述
      */
     private String description;

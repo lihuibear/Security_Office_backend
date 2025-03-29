@@ -1,5 +1,7 @@
 package com.lihui.security_office_backend.controller;
 
+import com.lihui.security_office_backend.annotation.AuthCheck;
+import com.lihui.security_office_backend.constant.UserConstant;
 import com.lihui.security_office_backend.utils.FileUploadUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +24,8 @@ public class FileUploadController {
     /**
      * 上传单个文件，并指定文件类型
      */
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+
     @PostMapping("/upload")
     public ResponseEntity<String> uploadFile(
             @RequestParam("file") MultipartFile file,
@@ -41,6 +45,8 @@ public class FileUploadController {
     /**
      * 上传多个文件，并指定文件类型
      */
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+
     @PostMapping("/upload-multiple")
     public ResponseEntity<String[]> uploadMultipleFiles(
             @RequestParam("files") MultipartFile[] files,

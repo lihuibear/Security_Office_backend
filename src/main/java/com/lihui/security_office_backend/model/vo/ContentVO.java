@@ -64,6 +64,12 @@ public class ContentVO implements Serializable {
      */
     private Date updateTime;
 
+    /**
+     * 学习时长（分钟）
+     */
+    private Integer learningTime;
+
+
 
     /**
      * 上传内容的用户ID

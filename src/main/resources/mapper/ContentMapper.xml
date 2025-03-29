@@ -17,12 +17,13 @@
             <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
             <result property="isDelete" column="isDelete" jdbcType="TINYINT"/>
             <result property="userId" column="userId" jdbcType="BIGINT"/>
+        <result property="learningTime" column="learningTime" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,title,description,
         type,url,score,
         categoryId,coverUrl,createTime,
-        updateTime,isDelete,userId
+        updateTime,isDelete,userId,learningTime
     </sql>
 </mapper>

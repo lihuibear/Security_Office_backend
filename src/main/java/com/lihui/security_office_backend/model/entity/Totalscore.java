@@ -9,37 +9,37 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * 学生学习记录
- * @TableName student_learning_record
+ * 
+ * @TableName totalscore
  */
-@TableName(value ="student_learning_record")
+@TableName(value ="totalscore")
 @Data
-public class StudentLearningRecord implements Serializable {
+public class Totalscore implements Serializable {
     /**
-     * 学习记录ID
+     * 
      */
     @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
-     * 学生ID
+     * 
      */
-    private Long studentId;
+    private Long userId;
 
     /**
-     * 内容ID
+     * 
      */
-    private Long contentId;
+    private Integer allScore;
 
     /**
-     * 学习进度（0-100%）
+     * 
      */
-    private Double progress;
+    private Date createTime;
 
     /**
-     * 最后访问时间
+     * 
      */
-    private Date lastAccessTime;
+    private Date updateTime;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

@@ -1,11 +1,16 @@
 package com.lihui.security_office_backend.service;
 
+import com.alibaba.excel.EasyExcel;
 import com.lihui.security_office_backend.model.dto.user.UserEditRequest;
 import com.lihui.security_office_backend.model.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lihui.security_office_backend.model.vo.LoginUserVO;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
 
 /**
 * @author lihui
@@ -31,4 +36,5 @@ public interface UserService extends IService<User> {
     boolean userLogout(HttpServletRequest request);
 
 
+    List<User> getAllUsers();
 }

@@ -17,6 +17,11 @@ public class ContentUpdataRequest implements Serializable {
      */
     private Long id;
 
+
+    /**
+     * 学习时长（分钟）
+     */
+    private Integer learningTime;
     /**
      * 内容标题
      */

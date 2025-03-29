@@ -1,7 +1,9 @@
 package com.lihui.security_office_backend.controller;
 
+import com.lihui.security_office_backend.annotation.AuthCheck;
 import com.lihui.security_office_backend.common.BaseResponse;
 import com.lihui.security_office_backend.common.ResultUtils;
+import com.lihui.security_office_backend.constant.UserConstant;
 import com.lihui.security_office_backend.exception.BusinessException;
 import com.lihui.security_office_backend.exception.ErrorCode;
 import com.lihui.security_office_backend.exception.ThrowUtils;
@@ -10,11 +12,17 @@ import com.lihui.security_office_backend.model.dto.user.UserLoginRequest;
 import com.lihui.security_office_backend.model.entity.User;
 import com.lihui.security_office_backend.model.vo.LoginUserVO;
 import com.lihui.security_office_backend.service.UserService;
+import com.lihui.security_office_backend.utils.ExcelUtils;
+import com.lihui.security_office_backend.utils.UserExcelListener;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/user")
@@ -22,6 +30,7 @@ public class UserController {
 
     @Resource
     private UserService userService;
+
     /**
      * 用户登录
      *
@@ -64,8 +73,11 @@ public class UserController {
     }
 
     //编辑用户信息
+    //todo 编辑用户信息
+    @AuthCheck(mustRoles = {UserConstant.ADMIN_ROLE, UserConstant.DEFAULT_ROLE})
+
     @PostMapping("/edit")
-    public BaseResponse<Boolean> editUser(@RequestBody UserEditRequest userEditRequest, HttpServletRequest request){
+    public BaseResponse<Boolean> editUser(@RequestBody UserEditRequest userEditRequest, HttpServletRequest request) {
         // 获取当前登录用户的详细信息
         User loginUser = userService.getLoginUser(request);  // 传递 request 参数
         // 校验参数
@@ -88,5 +100,61 @@ public class UserController {
         return ResultUtils.success(true);
 
     }
+
+//    /**
+//     * 导出用户列表为Excel文件
+//     *
+//     * @param response 响应对象
+//     */
+//    @GetMapping("/export")
+//    public void exportUsers(HttpServletResponse response) {
+//        List<User> userList = userService.getAllUsers();
+//        String fileName = "用户列表";
+//        // 不排除任何字段，传入null
+//        Set<String> excludeColumnFieldNames = null;
+//        ExportUtils.downloadExportExcel(response, userList, fileName, User.class, excludeColumnFieldNames);
+//    }
+//
+//    /**
+//     * 导入用户数据
+//     */
+//    @PostMapping("/import")
+//    public String importUsers(@RequestParam("file") MultipartFile file) {
+//        try {
+//            ExcelUtils.importExcel(file, User.class, new UserExcelListener(userService));
+//            return "用户导入成功";
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return "用户导入失败：" + e.getMessage();
+//        }
+//    }
+
+    /**
+     * 导出用户列表
+     */
+    @AuthCheck(mustRole= UserConstant.ADMIN_ROLE)
+    @GetMapping("/export")
+    public void exportUsers(HttpServletResponse response) {
+        List<User> userList = userService.getAllUsers();
+        String fileName = "用户列表";
+        Set<String> excludeColumnFieldNames = null;
+        ExcelUtils.exportExcel(response, userList, fileName, User.class, excludeColumnFieldNames);
+    }
+
+    /**
+     * 导入用户数据
+     */
+    @AuthCheck(mustRole= UserConstant.ADMIN_ROLE)
+    @PostMapping("/import")
+    public String importUsers(@RequestParam("file") MultipartFile file) {
+        try {
+            ExcelUtils.importExcel(file, User.class, new UserExcelListener(userService));
+            return "用户导入成功";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "用户导入失败：" + e.getMessage();
+        }
+    }
+
 
 }

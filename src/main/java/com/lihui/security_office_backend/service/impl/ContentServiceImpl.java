@@ -95,6 +95,8 @@ public class ContentServiceImpl extends ServiceImpl<ContentMapper, Content> impl
         content.setDescription(contentUpdataRequest.getDescription());
         content.setScore(contentUpdataRequest.getScore());
         content.setCategoryId(contentUpdataRequest.getCategoryId());
+        //学习时间
+        content.setLearningTime(contentUpdataRequest.getLearningTime());
         content.setUpdateTime(currentTime);
 
         // 更新文件相关的属性
@@ -128,6 +130,7 @@ public class ContentServiceImpl extends ServiceImpl<ContentMapper, Content> impl
                     contentVO.setUrl(content.getUrl());
                     contentVO.setCreateTime(content.getCreateTime());
                     contentVO.setUpdateTime(content.getUpdateTime());
+                    contentVO.setLearningTime(content.getLearningTime());
                     return contentVO;
 
                 }).collect(Collectors.toList());
@@ -151,10 +154,12 @@ public class ContentServiceImpl extends ServiceImpl<ContentMapper, Content> impl
         Integer score = contentQueryRequest.getScore();
         Long categoryId = contentQueryRequest.getCategoryId();
         String coverUrl = contentQueryRequest.getCoverUrl();
+        Integer learningTime = contentQueryRequest.getLearningTime();
         Date createTime = contentQueryRequest.getCreateTime();
         Date updateTime = contentQueryRequest.getUpdateTime();
         String sortField = contentQueryRequest.getSortField();
         String sortOrder = contentQueryRequest.getSortOrder();
+
 
         // 拼接查询条件
         queryWrapper.eq(ObjUtil.isNotEmpty(id), "id", id);
@@ -167,6 +172,7 @@ public class ContentServiceImpl extends ServiceImpl<ContentMapper, Content> impl
         queryWrapper.eq(ObjUtil.isNotEmpty(coverUrl), "coverUrl", coverUrl);
         queryWrapper.eq(ObjUtil.isNotEmpty(createTime), "createTime", createTime);
         queryWrapper.eq(ObjUtil.isNotEmpty(updateTime), "updateTime", updateTime);
+        queryWrapper.eq(ObjUtil.isNotEmpty(learningTime), "learningTime", learningTime);
         // 排序
         queryWrapper.orderBy(StrUtil.isNotEmpty(sortField), sortOrder.equals("ascend"), sortField);
         return queryWrapper;
@@ -185,6 +191,7 @@ public class ContentServiceImpl extends ServiceImpl<ContentMapper, Content> impl
         content.setCategoryId(contentAddRequest.getCategoryId());
         content.setCoverUrl(contentAddRequest.getCoverUrl());
         content.setUserId(loginUser.getId());
+        content.setLearningTime(contentAddRequest.getLearningTime());
         return content;
     }
 }

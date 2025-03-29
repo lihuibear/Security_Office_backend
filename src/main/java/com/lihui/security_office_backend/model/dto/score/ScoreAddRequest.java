@@ -1,4 +1,4 @@
-package com.lihui.security_office_backend.model.entity;
+package com.lihui.security_office_backend.model.dto.score;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -13,46 +13,23 @@ import java.util.Date;
  * 学生分数
  * @TableName score
  */
-@TableName(value ="score")
 @Data
-public class Score implements Serializable {
-    /**
-     * 分数记录ID
-     */
-    @TableId(type = IdType.AUTO)
-    private Long id;
+public class ScoreAddRequest implements Serializable {
 
-    /**
-     * 学生ID
-     */
-    private Long studentId;
 
     /**
      * 内容ID
      */
     private Long contentId;
 
-    /**
-     * 获得的分数
-     */
-    private Integer score;
 
     /**
      * 学习时长（分钟）
      */
     private Integer learningTime;
 
-    /**
-     * 完成状态
-     */
-    private int completionStatus;
 
-    /**
-     * 创建时间
-     */
-    private Date createTime;
 
-    @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
 

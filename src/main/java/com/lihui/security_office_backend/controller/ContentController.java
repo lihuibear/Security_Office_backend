@@ -1,8 +1,12 @@
 package com.lihui.security_office_backend.controller;
 
+import java.util.Date;
+
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.lihui.security_office_backend.annotation.AuthCheck;
 import com.lihui.security_office_backend.common.BaseResponse;
 import com.lihui.security_office_backend.common.ResultUtils;
+import com.lihui.security_office_backend.constant.UserConstant;
 import com.lihui.security_office_backend.exception.BusinessException;
 import com.lihui.security_office_backend.exception.ErrorCode;
 import com.lihui.security_office_backend.model.dto.content.ContentAddRequest;
@@ -30,6 +34,8 @@ public class ContentController {
     @Resource
     private FileUploadUtils fileUploadUtils;
 
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+
     @PostMapping("/add")
     public BaseResponse<Boolean> addContent(
             ContentAddRequest contentAddRequest,
@@ -41,12 +47,12 @@ public class ContentController {
 //            @RequestParam("categoryId") Long categoryId,
             HttpServletRequest request) {
 
-//        MultipartFile mainFile = contentAddRequest.getMainFile();
-//        MultipartFile coverFile = contentAddRequest.getCoverFile();
         String title = contentAddRequest.getTitle();
+        Integer learningTime = contentAddRequest.getLearningTime();
         String description = contentAddRequest.getDescription();
         Integer score = contentAddRequest.getScore();
         Long categoryId = contentAddRequest.getCategoryId();
+
         try {
             String mainFileType = fileUploadUtils.inferFileType(mainFile);
             if ((!"video".equals(mainFileType) && !"article".equals(mainFileType))) {
@@ -64,6 +70,8 @@ public class ContentController {
             contentAddRequest.setCoverUrl(coverFileUrl);
             contentAddRequest.setScore(score);
             contentAddRequest.setCategoryId(categoryId);
+            contentAddRequest.setLearningTime(learningTime);
+
 
             boolean result = contentService.addContent(contentAddRequest, request);
             return ResultUtils.success(result);
@@ -74,12 +82,16 @@ public class ContentController {
         }
     }
 
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+
     @PostMapping("/delete")
     public BaseResponse<Boolean> deleteContent(ContentDeleteRequest contentDeleteRequest) {
         Long id = contentDeleteRequest.getId();
         boolean result = contentService.deleteContent(id);
         return ResultUtils.success(result);
     }
+
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
 
     @PostMapping("/update")
     public BaseResponse<Boolean> updateContent(ContentUpdataRequest contentUpdataRequest,
@@ -119,13 +131,14 @@ public class ContentController {
         }
     }
 
-    @GetMapping("/list/")
+    @GetMapping("/list")
     public BaseResponse<List<ContentVO>> getContentList() {
         List<ContentVO> contentList = contentService.getContentList();
         return ResultUtils.success(contentList);
     }
+
     @PostMapping("/list/page")
-        public BaseResponse<Page<Content>> getContentListByPage(@RequestBody ContentQueryRequest contentQueryRequest) {
+    public BaseResponse<Page<Content>> getContentListByPage(@RequestBody ContentQueryRequest contentQueryRequest) {
         long current = contentQueryRequest.getCurrent();
         long size = contentQueryRequest.getPageSize();
         // 查数据库
