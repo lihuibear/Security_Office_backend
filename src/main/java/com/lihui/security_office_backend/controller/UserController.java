@@ -73,7 +73,6 @@ public class UserController {
     }
 
     //编辑用户信息
-    //todo 编辑用户信息
     @AuthCheck(mustRoles = {UserConstant.ADMIN_ROLE, UserConstant.DEFAULT_ROLE})
 
     @PostMapping("/edit")
