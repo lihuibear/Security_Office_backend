@@ -1,7 +1,5 @@
 package com.lihui.security_office_backend.controller;
 
-import java.util.Date;
-
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lihui.security_office_backend.annotation.AuthCheck;
 import com.lihui.security_office_backend.common.BaseResponse;
@@ -130,6 +128,14 @@ public class ContentController {
 //            return ResponseEntity.badRequest().body(false);
         }
     }
+
+    //根据id查询内容
+    @GetMapping("/{id}")
+    public BaseResponse<BaseResponse<ContentVO>> getContentById(@PathVariable Long id) {
+        BaseResponse<ContentVO> contentVO = contentService.getContentById(id);
+        return ResultUtils.success(contentVO);
+    }
+
 
     @GetMapping("/list")
     public BaseResponse<List<ContentVO>> getContentList() {

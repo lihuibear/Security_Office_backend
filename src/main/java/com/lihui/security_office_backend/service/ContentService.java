@@ -1,6 +1,7 @@
 package com.lihui.security_office_backend.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.lihui.security_office_backend.common.BaseResponse;
 import com.lihui.security_office_backend.model.dto.content.ContentAddRequest;
 import com.lihui.security_office_backend.model.dto.content.ContentQueryRequest;
 import com.lihui.security_office_backend.model.dto.content.ContentUpdataRequest;
@@ -32,6 +33,8 @@ public interface ContentService extends IService<Content> {
     List<ContentVO> getContentList();
 
     QueryWrapper<Content> getQueryWrapper(ContentQueryRequest contentQueryRequest);
+
+    BaseResponse<ContentVO> getContentById(Long id);
 
 
 //    boolean addContent(ContentAddRequest contentAddRequest, HttpServletRequest request);

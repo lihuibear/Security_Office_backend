@@ -4,14 +4,14 @@ import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.lihui.security_office_backend.common.BaseResponse;
+import com.lihui.security_office_backend.common.ResultUtils;
 import com.lihui.security_office_backend.exception.BusinessException;
 import com.lihui.security_office_backend.exception.ErrorCode;
 import com.lihui.security_office_backend.mapper.ContentMapper;
-import com.lihui.security_office_backend.model.dto.category.CategoryQueryRequest;
 import com.lihui.security_office_backend.model.dto.content.ContentAddRequest;
 import com.lihui.security_office_backend.model.dto.content.ContentQueryRequest;
 import com.lihui.security_office_backend.model.dto.content.ContentUpdataRequest;
-import com.lihui.security_office_backend.model.entity.Category;
 import com.lihui.security_office_backend.model.entity.Content;
 import com.lihui.security_office_backend.model.entity.User;
 import com.lihui.security_office_backend.model.vo.ContentVO;
@@ -19,6 +19,7 @@ import com.lihui.security_office_backend.service.CategoryService;
 import com.lihui.security_office_backend.service.ContentService;
 import com.lihui.security_office_backend.service.UserService;
 import com.lihui.security_office_backend.utils.FileUploadUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -177,6 +178,23 @@ public class ContentServiceImpl extends ServiceImpl<ContentMapper, Content> impl
         queryWrapper.orderBy(StrUtil.isNotEmpty(sortField), sortOrder.equals("ascend"), sortField);
         return queryWrapper;
 
+
+    }
+
+    @Override
+    public BaseResponse<ContentVO> getContentById(Long id) {
+        // 校验
+        if (id == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR, "内容 ID 不能为空");
+        }
+        // 查询
+        Content content = this.baseMapper.selectById(id);
+        if (content == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR, "内容不存在");
+        }
+        ContentVO contentVO = new ContentVO();
+        BeanUtils.copyProperties(content, contentVO);
+        return ResultUtils.success(contentVO);
 
     }
 
