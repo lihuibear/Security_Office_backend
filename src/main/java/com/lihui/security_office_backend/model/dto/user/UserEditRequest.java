@@ -12,7 +12,6 @@ import java.util.Date;
  * 用户信息
  * @TableName user
  */
-@TableName(value ="user")
 @Data
 public class UserEditRequest implements Serializable {
     /**
@@ -40,14 +39,6 @@ public class UserEditRequest implements Serializable {
      * 出生日期
      */
     private Date dateOfBirth;
-
-
-    /**
-     * 更新时间
-     */
-    private Date updateTime;
-
-
 
     private static final long serialVersionUID = 1L;
 

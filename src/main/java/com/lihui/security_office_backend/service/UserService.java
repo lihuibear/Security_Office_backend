@@ -37,4 +37,6 @@ public interface UserService extends IService<User> {
 
 
     List<User> getAllUsers();
+
+    boolean editUser(UserEditRequest userEditRequest);
 }

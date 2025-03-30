@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lihui.security_office_backend.exception.BusinessException;
 import com.lihui.security_office_backend.exception.ErrorCode;
+import com.lihui.security_office_backend.model.dto.user.UserEditRequest;
 import com.lihui.security_office_backend.model.entity.User;
 import com.lihui.security_office_backend.model.vo.LoginUserVO;
 import com.lihui.security_office_backend.service.UserService;
@@ -21,23 +22,26 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import static com.lihui.security_office_backend.constant.UserConstant.USER_LOGIN_STATE;
 
 /**
-* @author lihui
-* @description 针对表【user(用户信息)】的数据库操作Service实现
-* @createDate 2025-03-28 09:33:49
-*/
+ * @author lihui
+ * @description 针对表【user(用户信息)】的数据库操作Service实现
+ * @createDate 2025-03-28 09:33:49
+ */
 @Slf4j
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User>
-    implements UserService {
+        implements UserService {
 
     @Resource
     private final UserMapper userMapper;
+
     public UserServiceImpl(UserMapper userMapper) {
         this.userMapper = userMapper;
     }
@@ -54,7 +58,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         final String SALT = "lihui";
         return DigestUtils.md5DigestAsHex((SALT + userPassword).getBytes());
     }
-
 
 
     @Override
@@ -119,6 +122,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         }
         return currentUser;
     }
+
     @Override
     public boolean userLogout(HttpServletRequest request) {
         // 先判断是否已登录
@@ -136,7 +140,33 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         return userMapper.selectList(null);
     }
 
+    // 编辑用户信息
+    public boolean editUser(UserEditRequest userEditRequest) {
+        // 获取用户信息
+        User userToUpdate = userMapper.selectById(userEditRequest.getId());
+        if (userToUpdate == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户不存在");
+        }
+        //校验密码长度
+        if (userEditRequest.getUserPassword() != null && userEditRequest.getUserPassword().length() < 8) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "密码长度不能小于8位");
+        }
+        // 如果需要修改密码，进行加盐处理
+        if (userEditRequest.getUserPassword() != null) {
+            String hashedPassword = getEncryptPassword(userEditRequest.getUserPassword());
+            userEditRequest.setUserPassword(hashedPassword);
+        }
 
+        // 设置更新时间
+        Date currentTime = new Date();
+        userToUpdate.setUpdateTime(currentTime);
+
+        // 使用 BeanUtils 将数据复制到 User 对象
+        BeanUtils.copyProperties(userEditRequest, userToUpdate);
+
+        // 更新用户信息
+        return userMapper.updateById(userToUpdate) > 0;
+    }
 
 
 }
